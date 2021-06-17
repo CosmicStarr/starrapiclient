@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment.prod';
+import { IUser } from './_Models/User';
+import { AccountServicesService } from './_Services/account-services.service';
 
 @Component({
   selector: 'app-root',
@@ -10,20 +10,19 @@ import { environment } from 'src/environments/environment.prod';
 export class AppComponent implements OnInit{
   title = 'StarrClient';
   users:any;
-  baseUrl = environment.baseUrl;
+  
 
-  constructor(private httpclient:HttpClient) { 
+  constructor(private AccountService:AccountServicesService) { 
   }
 
   ngOnInit() {
-    this.getUsers();
+ 
+    this.SetCurrentUsers();
   }
 
-  getUsers() {
-    this.httpclient.get(this.baseUrl + 'api/users').subscribe(results =>{
-      this.users = results;
-    },error =>{
-      console.log(error);
-    });
+  SetCurrentUsers(){
+    const User : IUser = JSON.parse(localStorage.getItem('user'));
+    this.AccountService.SetCurrentUser(User);
   }
+
 }
