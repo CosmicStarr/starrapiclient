@@ -6,24 +6,32 @@
       </button>
         <a class="nav-link nav-item btn btn-outline-success" href="#">New Matches</a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf=" AccountService.CurrentUser$|async">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">New Matches</a>
-          </li>
-          <div class="nav-item dropdown" dropdown>
-            <a class="nav-link dropdown-toggle" dropdownToggle href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Welcome
-            </a>
-            <ul class="dropdown-menu bg-dark" *dropdownMenu aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item bg-dark text-light" href="#">Register</a></li>
-              <li><a class="dropdown-item bg-dark text-light" href="#">Edit Profile</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item bg-dark text-light" (click)="LogOut()">Logout</a></li>
-            </ul>
-        </div>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+            <ng-container *ngIf=" (AccountService.CurrentUser$|async) as User">
+            <li class="nav-item">
+              <a class="nav-link" routerLink='/' routerLinkActive='active'>Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink='/members'routerLinkActive='active'>New Matches</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink='/lists'routerLinkActive='active'>Lists</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink='/messages'routerLinkActive='active'>Messages</a>
+            </li>
+            <div class="nav-item dropdown" dropdown>
+              <a class="nav-link dropdown-toggle" dropdownToggle id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Welcome {{User.username |titlecase}} 
+              </a>
+              <ul class="dropdown-menu bg-dark" *dropdownMenu aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item bg-dark text-light" href="#">Register</a></li>
+                <li><a class="dropdown-item bg-dark text-light" href="#">Edit Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item bg-dark text-light" (click)="LogOut()">Logout</a></li>
+              </ul>
+          </div>
+            </ng-container>
         </ul>
       </div>
       <form
