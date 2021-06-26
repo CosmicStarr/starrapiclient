@@ -9,14 +9,13 @@ import { AccountServicesService } from './_Services/account-services.service';
 })
 export class AppComponent implements OnInit{
   title = 'StarrClient';
-  users:any;
+ 
   
 
   constructor(private AccountService:AccountServicesService) { 
   }
 
   ngOnInit() {
- 
     this.SetCurrentUsers();
   }
 
