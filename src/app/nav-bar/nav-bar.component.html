@@ -20,6 +20,7 @@
             <li class="nav-item">
               <a class="nav-link" routerLink='/messages'routerLinkActive='active'>Messages</a>
             </li>
+            <img src="{{User.photoUrl}}" alt="{{User.username}}" style="max-height:40px; border: 2px solid gold; display: inline;">
             <div class="nav-item dropdown" dropdown>
               <a class="nav-link dropdown-toggle" dropdownToggle id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Welcome {{User.username |titlecase}} 
