@@ -29,8 +29,10 @@ export class GlobalErrorsInterceptor implements HttpInterceptor {
                   }
                 }
                 throw ModelStateError.flat();
-              }else{
+              }else if(typeof(error.error)==='object'){
                 this.toastr.error(error.status,error.statusText === 'OK' ? 'Bad Request' : error.statusText, error.status);
+              }else{
+                this.toastr.error(error.error, error.status);
               }             
               break;
             case 401:
