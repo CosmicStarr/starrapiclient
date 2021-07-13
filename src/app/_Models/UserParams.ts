@@ -5,7 +5,7 @@ export class UserParam{
     public minAge = 18;
     public maxAge = 99;
     public pageNumber = 1;
-    public pageSize = 5;
+    public pageSize = 20;
     public orderBy = 'lastActive';
 
  

@@ -11,6 +11,7 @@ import { AuthenticateGuard } from './_guards/authenticate.guard';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { UnsavedChangesGuard } from './_guards/unsaved-changes.guard';
+import { MemberDetailsResolverResolver } from './_Resolvers/member-details-resolver.resolver';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -20,7 +21,7 @@ const routes: Routes = [
     canActivate: [AuthenticateGuard],
     children:[
       {path:'members',component:MemberListComponent},
-      {path:'members/:username',component:MemberDetailsComponent},
+      {path:'members/:username',component:MemberDetailsComponent, resolve:{member: MemberDetailsResolverResolver}},
       {path:'lists',component:ListComponent},
       {path:'messages',component:MessagesComponent},
       {path:'member/edit',component:MemberEditComponent, canDeactivate: [UnsavedChangesGuard]},

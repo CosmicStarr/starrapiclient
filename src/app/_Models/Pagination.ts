@@ -8,4 +8,5 @@ export interface IPagination{
 export class paginatedResults<T>{
     results: T;
     pagination: IPagination;
+
 }
