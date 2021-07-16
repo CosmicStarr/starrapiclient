@@ -37,7 +37,7 @@ export class MessagesComponent implements OnInit {
 
   deleteMessages(Id:number){
     this.messageService.deleteMSG(Id).subscribe(() => {
-      this.messages.splice(this.messages.findIndex(m => m.messageid === Id),1);
+      this.messages.splice(this.messages.findIndex(m => m.messageId === Id),1);
     }, error =>{
       console.log(error)
     })

@@ -27,6 +27,8 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { TextInputComponent } from './_Forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminComponent } from './admin/admin/admin.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
 
 
 @NgModule({
@@ -47,7 +49,9 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     PhotoEditorComponent,
     TextInputComponent,
     DateInputComponent,
-    MemberMessagesComponent
+    MemberMessagesComponent,
+    AdminComponent,
+    HasRoleDirective
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IMessages } from '../_Models/Messages';
 import { getPagination, newMethod } from './PaginationHelper';
@@ -26,7 +27,7 @@ export class MessageService {
     return this.Http.post<IMessages>(this.BaseUrl + 'Messages', {RecipientUsername: username, content});
   }
 
-  deleteMSG(Id:number){
-    return this.Http.delete<IMessages>(this.BaseUrl + 'Messages/'+ Id);
+  deleteMSG(Id:number):Observable<void>{
+    return this.Http.delete<void>(this.BaseUrl + 'Messages/'+ Id);
   }
 }
