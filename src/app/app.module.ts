@@ -29,6 +29,9 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { HasRoleDirective } from './_directives/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RolesModalsComponent } from './_modals/roles-modals/roles-modals.component';
 
 
 @NgModule({
@@ -51,7 +54,10 @@ import { HasRoleDirective } from './_directives/has-role.directive';
     DateInputComponent,
     MemberMessagesComponent,
     AdminComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModalsComponent
   ],
   imports: [
     BrowserModule,
@@ -70,5 +76,6 @@ import { HasRoleDirective } from './_directives/has-role.directive';
               {provide:HTTP_INTERCEPTORS,useClass:LoadingInterceptor,multi:true}
   ],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }
