@@ -1,1 +1,15 @@
-<p>admin works!</p>
+<h2 class="container">Admin Panel</h2>
+<div class="tab-panel container">
+    <tabset class="member-tabset">
+        <tab heading='User Management' *appHasRole='["Admin"]'>
+            <div class="container">
+                <app-user-management></app-user-management>
+            </div>
+        </tab>
+        <tab heading='Photo Management' *appHasRole='["Manager"]'>
+            <div class="container">
+                <app-photo-management></app-photo-management>
+            </div>
+        </tab>
+    </tabset>
+</div>
