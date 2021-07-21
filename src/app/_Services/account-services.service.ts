@@ -4,6 +4,7 @@ import {map} from 'rxjs/operators';
 import { IUser } from '../_Models/User';
 import { ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PresentService } from './present.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AccountServicesService {
   baseUrl = environment.baseUrl;
   private CurrentUserSource = new ReplaySubject<IUser>(1);
   CurrentUser$ = this.CurrentUserSource.asObservable();
-  constructor(private Http:HttpClient) { }
+  constructor(private Http:HttpClient,private present:PresentService) { }
 
   Login(model:any){
     return this.Http.post(this.baseUrl + 'account/login', model).pipe(
@@ -20,6 +21,7 @@ export class AccountServicesService {
         const User = results;
         if(User){
           this.SetCurrentUser(User);
+          this.present.createHubConnection(User);
         }
       })
     );
@@ -29,7 +31,8 @@ export class AccountServicesService {
     return this.Http.post(this.baseUrl + "account/register", model).pipe(
       map((User:IUser) =>{
         if(User){
-          this.SetCurrentUser(User);        
+          this.SetCurrentUser(User);
+          this.present.createHubConnection(User);        
         }
       })
     );
@@ -46,6 +49,7 @@ export class AccountServicesService {
   LogOut(){
     localStorage.removeItem('user');
     this.CurrentUserSource.next(null);
+    this.present.stopConnection();
   }
 
   getdecodedtoken(token){

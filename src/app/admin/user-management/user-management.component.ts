@@ -25,19 +25,19 @@ export class UserManagementComponent implements OnInit {
   }
 
   openModalWithComponent(user:IUser) {
-    const initialState = {
+    const initial = {
       class:'modal-dialog-centered',
       config :{
         user,
         roles:this.getRolesArray(user)
       }
     }
-    this.bsModalRef = this.modalService.show(RolesModalsComponent, initialState);
+    this.bsModalRef = this.modalService.show(RolesModalsComponent, initial);
     this.bsModalRef.content.updateSelectedRoles.subscribe(results =>{
       const rolesUpdate = {
         roles: [...results.filter(e => e.checked === true).map(e => e.name)]
       };
-      if(rolesUpdate){
+      if(rolesUpdate && undefined){
         this.adminService.updateUserRoles(user.username,rolesUpdate.roles).subscribe(()=>{
           user.roles = [...rolesUpdate.roles]
         })
@@ -59,7 +59,7 @@ export class UserManagementComponent implements OnInit {
          if(element.name === item){
            isMatch = true;
            element.checked = true;
-           roles.push(element);
+           roles?.push(element);
            break;
          }
       }

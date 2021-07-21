@@ -1,17 +1,52 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IMessages } from '../_Models/Messages';
+import { IUser } from '../_Models/User';
 import { getPagination, newMethod } from './PaginationHelper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-
+  HubUrl = environment.HubUrl;
   BaseUrl = environment.baseUrl;
+  private HubConnection:HubConnection;
+  private MessageThreadSource = new BehaviorSubject<IMessages[]>([]);
+  messageThread$ = this.MessageThreadSource.asObservable();
+
+
   constructor(private Http:HttpClient) { }
+
+  createHubConnection(user:IUser,otherUser:string){
+    this.HubConnection = new HubConnectionBuilder()
+    .withUrl(this.HubUrl + 'messages?user=' + otherUser,{
+      accessTokenFactory: () => user.token
+    })
+    .withAutomaticReconnect()
+    .build()
+
+    this.HubConnection.start().catch(error => console.log(error));
+
+    this.HubConnection.on('ReceiveMessageThread', msg =>{
+      this.MessageThreadSource.next(msg);
+    })
+
+    this.HubConnection.on('NewMessage',msg =>{
+      this.messageThread$.pipe(take(1)).subscribe(results =>{
+        this.MessageThreadSource.next([...results,msg])
+      })
+    })
+  }
+
+  stopConnection(){
+    if(this.HubConnection){
+      this.HubConnection.stop();
+    }
+  }
 
   getMessages(pageNumber,pageSize,container){
     let params = getPagination(pageNumber,pageSize);
@@ -23,8 +58,9 @@ export class MessageService {
     return this.Http.get<IMessages[]>(this.BaseUrl + 'Messages/thread/' + username);
   }
 
-  sendMessage(username:string, content:string){
-    return this.Http.post<IMessages>(this.BaseUrl + 'Messages', {RecipientUsername: username, content});
+  async sendMessage(username:string, content:string){
+      return this.HubConnection.invoke('SendMessages',{ RecipientUsername: username, content })
+      .catch(error => console.log(error)); 
   }
 
   deleteMSG(Id:number):Observable<void>{

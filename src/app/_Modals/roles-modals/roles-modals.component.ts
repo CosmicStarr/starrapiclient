@@ -10,7 +10,7 @@ import { IUser } from 'src/app/_Models/User';
 export class RolesModalsComponent implements OnInit {
   @Input() updateSelectedRoles = new EventEmitter();
   user:IUser;
-  roles:any[];
+  roles:any[]=[];
   constructor(public bsModalRef: BsModalRef) { }
 
   ngOnInit(): void {
