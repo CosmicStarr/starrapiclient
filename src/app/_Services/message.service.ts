@@ -4,6 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { IGroups } from '../_Models/Groups';
 import { IMessages } from '../_Models/Messages';
 import { IUser } from '../_Models/User';
 import { getPagination, newMethod } from './PaginationHelper';
@@ -37,8 +38,21 @@ export class MessageService {
 
     this.HubConnection.on('NewMessage',msg =>{
       this.messageThread$.pipe(take(1)).subscribe(results =>{
-        this.MessageThreadSource.next([...results,msg])
+        this.MessageThreadSource.next([...results,msg]);
       })
+    })
+
+    this.HubConnection.on('UpdateGroup', (group:IGroups) =>{
+      if(group.connections.some(x => x.username === otherUser)){
+        this.messageThread$.pipe(take(1)).subscribe(results =>{
+          results.forEach(item =>{
+            if(!item.dateRead){
+              item.dateRead = new Date(Date.now())
+            }
+          })
+          this.MessageThreadSource.next([...results])
+        })
+      }
     })
   }
 
@@ -59,7 +73,7 @@ export class MessageService {
   }
 
   async sendMessage(username:string, content:string){
-      return this.HubConnection.invoke('SendMessages',{ RecipientUsername: username, content })
+      return this.HubConnection.invoke('SendMessages',{RecipientUsername: username, content})
       .catch(error => console.log(error)); 
   }
 

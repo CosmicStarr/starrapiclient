@@ -1,6 +1,6 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { take } from 'rxjs/operators';
@@ -28,10 +28,12 @@ export class MemberDetailsComponent implements OnInit, OnDestroy {
   galleryImages:NgxGalleryImage[];
   constructor(public present:PresentService 
     ,private route:ActivatedRoute
+    ,private router:Router
     ,private MessageService:MessageService, private accountService:AccountServicesService) {
       this.accountService.CurrentUser$.pipe(take(1)).subscribe(results =>{
         this.user = results
       })
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
      }
 
 
